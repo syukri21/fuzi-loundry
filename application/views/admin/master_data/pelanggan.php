@@ -44,7 +44,7 @@
                             <th>Nama Pelanggan</th>
                             <th>No WhatsApp</th>
                             <th>Alamat</th>  
-                            <th>Link Maps</th>  
+                            <!-- <th>Link Maps</th>  -->
                             <th><center>Edit & Hapus</center></th> 
                           </tr>
                         </thead> 
@@ -84,18 +84,19 @@
                       <label>Alamat</label>
                       <textarea class="form-control" name="alamat" id="alamat" required="" placeholder="Masukkan Alamat" rows="3"></textarea>
                     </div>
+<!--
                     <div class="my-2">
                       <label>Link Google Maps (tidak wajib)</label>
                       <input class="form-control" name="lokasi" id="lokasi" type="text" placeholder="Masukkan Link Lokasi Maps"></input> 
-                    </div>
+                    </div> -->
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                           <label>Email</label>
-                          <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email" required=""></input> 
+                          <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email"  value=""></input> 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden >
                           <label>Password</label>
-                          <input class="form-control" name="password" id="password" type="password" placeholder="Masukkan Password" required=""></input> 
+                          <input class="form-control" name="password" id="password" type="password" placeholder="Masukkan Password"  value=""></input> 
                         </div>
                       </div>
                   </div>
@@ -131,11 +132,12 @@
                       <label>Alamat</label>
                       <textarea class="form-control" name="alamat" id="alamat_e" required="" placeholder="Masukkan Alamat" rows="3"></textarea>
                     </div>
+<!--
                     <div class="my-2">
                       <label>Link Google Maps (tidak wajib)</label>
                       <input class="form-control" name="lokasi" id="lokasi_e" type="text" placeholder="Masukkan Link Lokasi Maps"></input> 
-                    </div>
-                    <div class="my-2">
+                    </div> -->
+                    <div class="my-2" hidden>
                       <div class="row">
                         <div class="col-md-6">
                           <label>Email</label>
@@ -238,7 +240,6 @@
                   <td>${val.nama_pelanggan}</td>
                   <td>${val.no_wa}</td>
                   <td>${val.alamat}</td> 
-                  <td><a target="_blank" href="${val.lokasi}">${val.lokasi}</a></td> 
                   <td align="center">
                     <button onclick="openEdit(${val.id})" class="my-2 btn btn-primary btn-pill btn-air-primary"><i class="icon-pencil-alt"></i></button>
                     <button onclick="openHapus(${val.id})" class="my-2 btn btn-danger btn-pill btn-air-danger"><i class="icon-close"></i></button>
@@ -300,8 +301,17 @@
         })
       }
 
+			function generateEmail(namaPelanggan){
+				namaPelanggan = namaPelanggan.replace(/\s+/g, ''); // Remove all spaces
+				let email = namaPelanggan + generateRandomString(5);
+				return email + '@gmail.com';
+			}
+
       $("#form_tambah").submit(function() {
         $("#modal-tambah").modal('toggle')
+
+				$("#password").val('password')
+				$("#email").val(generateEmail($("#nama_pelanggan").val()));
 
         $.ajax({
           url: base_url+'insert/pelanggan',
@@ -333,6 +343,9 @@
 
       $("#form_edit").submit(function() {
         $("#modal-edit").modal('toggle')
+
+				$("#password").val('password')
+				$("#email").val(generateEmail($("#nama_pelanggan").val()));
 
         $.ajax({
           url: base_url+'update/pelanggan',
@@ -383,6 +396,15 @@
           $('.loader-wrapper').fadeOut('slow', function () {}); 
         })
       })
+
+			function generateRandomString(length) {
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+				let result = '';
+				for (let i = 0; i < length; i++) {
+					result += characters.charAt(Math.floor(Math.random() * characters.length));
+				}
+				return result;
+			}
     </script>
   </body>
 </html>

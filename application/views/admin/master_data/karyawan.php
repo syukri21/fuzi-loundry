@@ -88,20 +88,21 @@
                       <label>Kategori</label>
                       <select class="form-control" name="kategori" id="kategori" required="">
                         <option value="">Pilih Kategori</option>
-                        <option value="Kasir">Kasir</option>
-                        <option value="Kurir">Kurir</option>
-                        <option value="Washing">Washing</option>
+                        <!-- <option value="Kasir">Kasir</option> -->
+                        <!-- <option value="Kurir">Kurir</option> -->
+                        <!-- <option value="Washing">Washing</option> -->
+                        <option value="Karyawan">Karyawan</option>
                       </select>
                     </div>
                     <div class="my-2">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                           <label>Email</label>
-                          <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email" required=""></input> 
+                          <input class="form-control" name="email" id="email" type="email" placeholder="Masukkan Email"  ></input> 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                           <label>Password</label>
-                          <input class="form-control" name="password" id="password" type="password" placeholder="Masukkan Password" required=""></input> 
+                          <input class="form-control" name="password" id="password" type="password" placeholder="Masukkan Password"  ></input> 
                         </div>
                       </div>
                     </div> 
@@ -314,8 +315,17 @@
         })
       }
 
+			function generateEmail(namaPelanggan){
+				namaPelanggan = namaPelanggan.replace(/\s+/g, ''); // Remove all spaces
+				let email = namaPelanggan + generateRandomString(5);
+				return email + '@gmail.com';
+			}
+
       $("#form_tambah").submit(function() {
         $("#modal-tambah").modal('toggle')
+
+				$("#password").val('password')
+				$("#email").val(generateEmail($("#nama_karyawan").val()));
 
         $.ajax({
           url: base_url+'insert/'+table,
@@ -397,6 +407,16 @@
           $('.loader-wrapper').fadeOut('slow', function () {}); 
         })
       })
+
+			function generateRandomString(length) {
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+				let result = '';
+				for (let i = 0; i < length; i++) {
+					result += characters.charAt(Math.floor(Math.random() * characters.length));
+				}
+				return result;
+			}
+
     </script>
   </body>
 </html>

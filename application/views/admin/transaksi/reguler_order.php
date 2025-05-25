@@ -84,9 +84,9 @@
                   </div>
                   <div class="card-body">
                     <ul class="nav nav-tabs border-tab nav-primary" id="info-tab" role="tablist">
-                      <li class="nav-item"><a class="nav-link active" id="info-home-tab" data-bs-toggle="tab" href="#info-home" role="tab" aria-controls="info-home" aria-selected="true"><i class="icofont icofont-check"></i>Sudah Bayar
+                      <li class="nav-item"><a class="nav-link active" id="info-home-tab" data-bs-toggle="tab" href="#info-home" role="tab" aria-controls="info-home" aria-selected="true"><i class="icofont icofont-check"></i>Order
                         <span class="badge badge-secondary rounded-pill"><span id="jumlah_sudah_bayar"></span></span></a></li>
-                      <li class="nav-item"><a class="nav-link" id="profile-info-tab" data-bs-toggle="tab" href="#info-profile" role="tab" aria-controls="info-profile" aria-selected="false"><i class="icofont icofont-time"></i>Belum Bayar <span class="badge badge-secondary rounded-pill"><span id="jumlah_belum_bayar"></span></span></a></li> 
+                      <!-- <li class="nav-item"><a class="nav-link" id="profile-info-tab" data-bs-toggle="tab" href="#info-profile" role="tab" aria-controls="info-profile" aria-selected="false"><i class="icofont icofont-time"></i>Belum Bayar <span class="badge badge-secondary rounded-pill"><span id="jumlah_belum_bayar"></span></span></a></li>  -->
                       <!-- <li class="nav-item"><a class="nav-link" id="pengembalian-dana-tab" data-bs-toggle="tab" href="#pengembalian-dana" role="tab" aria-controls="pengembalian-dana" aria-selected="false"><i class="icofont icofont-history"></i>Pengembalian Dana <span class="badge badge-secondary rounded-pill"><span id="jumlah_pengembalian_dana"></span></span></a></li>  -->
                     </ul>
                     <div class="tab-content" id="info-tabContent">
@@ -104,7 +104,6 @@
                                 <th><center>Status Order</center></th>  
                                 <th>Berat Pakaian</th>
                                 <th>Total Bayar</th>  
-                                <th>Lokasi</th>
                                 <th><center>Kategori Pesanan</center></th>  
                                 <th>Tanggal Order</th>   
                                 <th><center>Aksi</center></th>
@@ -361,11 +360,11 @@
                 <form action="javascript:;" id="form_selesai_pengantaran">
                   <input type="hidden" name="order_id" id="selesai_pengantaran_order_id">
                   <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Pengantaran</h5>
+                    <h5 class="modal-title">Konfirmasi Pengambilan</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body"> 
-                    Cucian pelanggan dengan Order ID <b><span id="sp-order_id"></span></b> selesai diantarkan ?
+                    Cucian pelanggan dengan Order ID <b><span id="sp-order_id"></span></b> di ambil ?
                   </div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
@@ -561,7 +560,7 @@
               
               if(resOrder.status_pembayaran == 'settlement') {
                 btnBayar = `
-                  <button onclick="openDialogFinish('${resOrder.berat}',${resOrder.total_harga}, '${waktu}', '${format_tgl}')"  class="btn btn-air-primary btn-pill btn-primary">Sudah Bayar</button>
+                  <button onclick="openDialogFinish('${resOrder.berat}',${resOrder.total_harga}, '${waktu}', '${format_tgl}')"  class="badge btn badge-primary">Sudah Bayar</button>
                 `
               } else if(resOrder.status_pembayaran == "pending") {
                   btnBayar = `
@@ -577,6 +576,17 @@
                   <span class="badge badge-dark">Kadaluarsa</span>
                   <button ="btn btn-dark btn-sm"><i class="fa fa-trash-o"></i></button>
                 `
+              }  else if(resOrder.status_pembayaran == "belum_bayar") {
+                if(resOrder.kategori_order == 'online') {
+                  btnBayar = `
+                    <span class="badge badge-danger">Bayar</span>
+                    <button onclick="openBayar(${resOrder.order_id})" class="btn btn-primary btn-air-primary mt-2"><i class="fa fa-check"></i></button>
+                  `
+                } else {
+                  btnBayar = `
+                    <button onclick="openKonfirmasi(${resOrder.order_id},'settlement')" class="btn btn-air-danger btn-pill btn-danger">Bayar</button>
+                  `  
+                }
               } else {
                 btnBayar = `
                   <button class="btn btn-air-dark btn-pill btn-dark">${resOrder.transaction_status}</button>
@@ -593,7 +603,7 @@
               let btnStatusOrder = '';
               if(resOrder.status_order == 'pending') {
                 btnStatusOrder = `
-                  <button onclick="openPenjemputan(${resOrder.order_id})" class="btn btn-dark">Pending</button>
+                  <button onclick="openSelesaiCuci(${resOrder.order_id})" class="btn btn-success">Proses Pencucian</button>
                 `
               } else if(resOrder.status_order == 'penjemputan') {
                 btnStatusOrder = `
@@ -601,20 +611,27 @@
                 `
               } else if(resOrder.status_order == 'pencucian') {
                 btnStatusOrder = `
-                  <button onclick="openSelesaiCuci(${resOrder.order_id})" class="btn btn-success">Proses Pencucian</button>
+                  <button onclick="openSelesaiPengantaran(${resOrder.order_id})" class="btn btn-success">Proses Pencucian</button>
                 `
               } else if(resOrder.status_order == 'selesai_cuci') {
                 btnStatusOrder = `
-                  <button onclick="openPengantaran(${resOrder.order_id})" class="btn btn-secondary">Selesai Mencuci</button>
+                  <button onclick="openSelesaiPengantaran(${resOrder.order_id})" class="btn btn-warning">Pengambilan</button>
                 `
               } else if(resOrder.status_order == 'pengantaran') {
                 btnStatusOrder = `
                   <button onclick="openSelesaiPengantaran(${resOrder.order_id})" class="btn btn-warning">Pengantaran</button>
                 `
               } else if(resOrder.status_order == 'selesai_pengantaran') {
-                btnStatusOrder = `
-                  <span class="badge badge-primary">Selesai</span>
-                `
+
+								if(resOrder.status_pembayaran == "belum_bayar") {
+									btnStatusOrder = `
+										<button onclick="openBayar(${resOrder.order_id},'settlement')" class="btn btn-warning">Belum Bayar</button>
+									`  
+							 	} else {
+									btnStatusOrder = `
+										<span class="badge badge-primary">Selesai</span>
+									`
+								}
               }
 
                tbody += `
@@ -632,7 +649,6 @@
                   </td> 
                   <td>${resOrder.berat} kg</td> 
                   <td>Rp ${formatRupiah(resOrder.total_harga)}</td> 
-                  <td><a target="_blank" href="${resOrder.lokasi}">${resOrder.lokasi}</a></td> 
                   <td align="center"><span class="badge ${badgeKategori}">${resOrder.kategori_order}</span></td> 
                   <td>${format_tgl+'<br> Pukul '+waktu}</td>  
                   <td align="center">
@@ -712,13 +728,13 @@
               }  else if(resOrder.status_pembayaran == "belum_bayar") {
                 if(resOrder.kategori_order == 'online') {
                   btnBayar = `
-                    <span class="badge badge-danger">Belum Bayar</span>
+                    <span class="badge badge-danger">Bayar</span>
                     <button onclick="openBayar(${resOrder.order_id})" class="btn btn-primary btn-air-primary mt-2"><i class="fa fa-check"></i></button>
                     <button onclick="openHapus(${resOrder.order_id})" class="btn btn-danger btn-air-danger mt-2"><i class="fa fa-trash-o"></i></button>
                   `
                 } else {
                   btnBayar = `
-                    <button onclick="openKonfirmasi(${resOrder.order_id},'settlement')" class="btn btn-air-danger btn-pill btn-danger">Belum Bayar</button>
+                    <button onclick="openKonfirmasi(${resOrder.order_id},'settlement')" class="btn btn-air-danger btn-pill btn-danger">Bayar</button>
                     <button onclick="openHapus(${resOrder.order_id})" class="btn btn-danger btn-air-danger mt-2"><i class="fa fa-trash-o"></i> Hapus</button>
                   `  
                 }
@@ -783,6 +799,7 @@
             $('.loader-wrapper').fadeIn('slow', function () {}); 
           },
           success: function(res) {
+						console.log("res", res)
             if(res.status) {
               $.notify('<i class="fa fa-check"></i><strong>Berhasil</strong> melunasi pembayaran', notifOpt)    
             } else {
@@ -1261,7 +1278,7 @@
         }).done(function () {
           loadBelumBayar()
           loadSudahBayar()
-          // $('.loader-wrapper').fadeOut('slow', function () {}); 
+          $('.loader-wrapper').fadeOut('slow', function () {}); 
         })
       })
 

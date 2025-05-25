@@ -75,10 +75,10 @@ class C_Order extends CI_Controller {
 			$id_washing = $this->session->userdata('id');
 			$where = "WHERE status_pembayaran = 'settlement' AND id_washing = '$id_washing' ";
 		} else {
-			$where = "WHERE status_pembayaran = '$status'";
+			$where = "WHERE status_pembayaran = '$status' OR status_pembayaran = 'belum_bayar'";
 		}
 
-		$data = $this->db->query('SELECT * FROM v_order '.$where)->result(); 
+		$data = $this->db->query('SELECT * FROM v_order '.$where.' ORDER BY order_id DESC')->result(); 
 		echo json_encode($data);
 	}
 
@@ -293,7 +293,7 @@ class C_Order extends CI_Controller {
 				'nama_paket_reguler' => $this->input->post('nama_paket'),
 				'harga_paket_reguler' => $this->input->post('harga_paket'),
 				'tanggal_order' => date('Y-m-d h:i:s'),
-				'status_pembayaran' => 'settlement',
+				'status_pembayaran' => 'belum_bayar',
 				'kategori_order' => 'reguler',
 				'status_order' => 'pending',
 				// 'snap_token' => $snapToken,

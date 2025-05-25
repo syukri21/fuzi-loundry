@@ -200,7 +200,9 @@
             $('#basic-1').dataTable().fnDestroy(); 
             // $('.loader-wrapper').fadeIn('slow', function () {}); 
           },
+
           success: function (res) {
+						console.log("pendapatanHari", res)
             let pendapatanHari = 0
             
             let tbody = ''
@@ -365,7 +367,8 @@
               no1 ++
             })
 
-            $("#tbody-2").html(tbody)
+
+            $("#tbody-2").html(tbody1)
 
             let pendapatanTahun = 0
             $.each(res.tahun, function (ih, valh) {
@@ -443,7 +446,7 @@
               no2 ++
             })
 
-            $("#tbody-3").html(tbody)
+            $("#tbody-3").html(tbody2)
 
             $("#hari").html('Rp '+ formatRupiah(pendapatanHari))
             $("#bulan").html('Rp '+ formatRupiah(pendapatanBulan))

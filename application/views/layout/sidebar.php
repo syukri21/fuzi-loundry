@@ -36,7 +36,7 @@
               <!-- <li><a href="<?php echo base_url('outlet'); ?>">Outlet</a></li> -->
               <li><a href="<?php echo base_url('pelanggan') ?>">Pelanggan</a></li> 
               <!-- <li><a href="<?php echo base_url('paket-laundry') ?>">Paket Laundry</a></li> -->
-              <!-- <li><a href="<?php echo base_url('karyawan') ?>">Karyawan</a></li> -->
+              <li><a href="<?php echo base_url('karyawan') ?>">Karyawan</a></li> 
             </ul>
           </li> 
           <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:;"><i data-feather="shopping-bag"></i><span>Transaksi</span></a>
