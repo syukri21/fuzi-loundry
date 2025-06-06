@@ -66,16 +66,12 @@
                       <input id="checkbox1" type="checkbox">
                       <label class="text-muted" for="checkbox1">Remember password</label>
                     </div>
-                    <!-- <a class="link" href="forget-password.html">Forgot password?</a> -->
                     <div class="text-end mt-3">
                       <button class="btn btn-primary btn-block w-100" type="submit">Sign in</button>
                     </div>
                   </div>
-                  <h6 class="text-muted mt-4 or">Pendaftaran </h6>
-                  <!-- <div class="social mt-4">
-                    <div class="btn-showcase"><a class="btn btn-light" href="https://www.linkedin.com/login" target="_blank"><i class="txt-linkedin" data-feather="linkedin"></i> LinkedIn </a><a class="btn btn-light" href="https://twitter.com/login?lang=en" target="_blank"><i class="txt-twitter" data-feather="twitter"></i>twitter</a><a class="btn btn-light" href="https://www.facebook.com/" target="_blank"><i class="txt-fb" data-feather="facebook"></i>facebook</a></div>
-                  </div> -->
-                  <p class="mt-4 mb-0 text-center">Belum punya akun?<a class="ms-2" href="<?php echo base_url('register'); ?>">Buat Akun</a></p> 
+                  <h6 class="text-muted mt-4 or">Reset Password</h6>
+                  <p class="mt-4 mb-0 text-center">Lupa password?<a class="ms-2" href="<?php echo base_url('forgot-password'); ?>">Reset Password</a></p> 
                 </form> 
               </div>
             </div>

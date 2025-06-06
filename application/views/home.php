@@ -76,11 +76,10 @@
             <div class="col-xl-5 col-lg-6">
               <div class="content">
                 <div>
-                  <h1 class="wow fadeIn">Aplikasi </h1>
-                  <h1 class="wow fadeIn">Laundry Online</h1>
+                  <h1 class="wow fadeIn">Combes </h1>
+                  <h1 class="wow fadeIn">Laundry</h1>
                   <h2 class="txt-secondary wow fadeIn">Pelayanan Mudah, Cepat & Bersih</h2>
-                  <p class="mt-3 wow fadeIn">Aplikasi Laundry kami menyediakan banyak model pemesanan, bisa melakukan pemesanan online ataupun offline (reguler). Dan banyak paket menarik lainnya.</p>
-                  <div class="btn-grp mt-4"><a class="btn btn-pill btn-primary btn-air-primary btn-lg me-3 wow pulse" style="margin-top: 16%;" href="<?php echo base_url('login'); ?>"> Pesan Sekarang <i class="icofont icofont-arrow-right"></i></a> </div>
+                  <div class="btn-grp mt-4"><a class="btn btn-pill btn-primary btn-air-primary btn-lg me-3 wow pulse" style="margin-top: 16%;" href="<?php echo base_url('login'); ?>"> Masuk <i class="icofont icofont-arrow-right"></i></a> </div>
                 </div>
               </div>
             </div>
@@ -91,131 +90,7 @@
           </div>
         </div>
       </div>
-      <section class="section-space cuba-demo-section bg-Widget pb-0 bg-primary">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12 wow pulse">
-              <div class="cuba-demo-content mt50">
-                <div class="couting">
-                  <h2>Tracking Pesanan</h2>
-                </div>
-                <p>
-                  <div class="row">
-                      <div class="col-md-4"></div>
-                      <div class="col-md-4">
-                        <form id="form_cari" action="javascript:;">
-                          <input class="form-control" type="number" name="order_id" id="order_id" placeholder="Masukkan Order ID">
-                          <div class="default-according" id="accordionoc">
-                            <button class="btn btn-secondary mt-3 btn-air-secondary btn-pill" aria-expanded="true" aria-controls="collapse11" type="submit" id="btn-cari"><i class="fa fa-search"></i> Lihat Status</button>
-                          </div>
-                        </form>
-                      </div> 
-                  </div>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container-fluid o-hidden">
-          <div class="row">
-            <div class="col-md-4"> </div>
-            <div class="col-md-4"> 
-              <div class="collapse" id="collapseicon" aria-labelledby="collapseicon" data-bs-parent="#accordionoc">
-                <p style="font-size: 20px;">Hasil Pencarian</p>
-                <div class="card">
-                  <div class="card-body text-dark">
-                    <table cellpadding="5">
-                      <tr>
-                        <td align="left">Nama Pelanggan</td>
-                        <td>: </td>
-                        <td align="left"><b><span id="nama_pelanggan"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Nomor WhatsApp </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="no_wa"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Email </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="email"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Alamat </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="alamat"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Berat Pakaian </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="berat"></span> kg</b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Total Harga </td>
-                        <td>: </td>
-                        <td align="left"><b>Rp <span id="total_harga"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Status Pembayaran </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="status_pembayaran"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Status Order </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="status_order"></span></b></td>
-                      </tr>
-                      <tr>
-                        <td align="left">Kategori Order </td>
-                        <td>: </td>
-                        <td align="left"><b><span id="kategori_order"></span></b></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div> 
-          </div>
-        </div>
-      </section>
-      <section class="section-space cuba-demo-section layout" id="paket">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12 wow pulse">
-              <div class="cuba-demo-content">
-                <div class="couting">
-                  <h2><?php echo $paket->num_rows(); ?></h2>
-                  <p>Paket Tersedia</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row demo-imgs">
-          	<?php 
-          		$color = ['primary','secondary','info','warning'];
-          	 ?>
-          	<?php foreach ($paket->result() as $key => $value): ?>
-          		<?php $warna = $color[rand(0,3)]; ?>
-	            <div class="col-lg-4 col-md-6 wow pulse demo-content">
-	              <div class="cuba-demo-img">
-                      	<h4 class="mb-3 counter">Rp <?php echo number_format($value->harga_paket, 0,',','.') ?></h4>
-                      	<span style="font-size: 100px;" class="txt-<?php echo $warna; ?>"><i class="icon-shopping-cart-full icon-bg"></i></span> <br>
-	              		<span class="m-0"><b>Pakaian akan diantarkan setiap <br> <?php echo $value->pengambilan; ?> hari sekali</b></span><br>
-                      	<span class="m-0"><?php echo $value->keterangan_paket; ?></span>
-                      	<a href="<?php echo base_url('login'); ?>" class="btn btn-<?php echo $warna; ?> mt-4 btn-pill">Pesan Sekarang <i class="icofont icofont-arrow-right"></i> </a>
-	              </div>
-	              <div class="title-wrapper">
-	                <div class="content">
-	                  <h3 class="theme-name mb-0"><?php echo $value->nama_paket; ?></h3>
-	                </div>
-	              </div>
-	            </div> 
-          	<?php endforeach ?>
-          </div>
-        </div>
-      </section>  
+
       <?php $this->load->view('layout/loader'); ?>
     </div>
     <!-- latest jquery-->

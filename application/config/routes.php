@@ -60,6 +60,9 @@ $route['print'] = 'C_Home/print';
 // Auth
 $route['login'] = 'C_Auth';
 $route['register'] = 'C_Auth/register';
+$route['forgot-password'] = 'C_Auth/forgotPassword';
+$route['reset-password'] = 'C_Auth/resetPassword';
+$route['send-reset-password-email'] = 'C_Auth/sendResetPasswordEmail';
 
 $route['login_act'] = 'C_Auth/loginAct';
 $route['logout'] = 'C_Auth/logout';
