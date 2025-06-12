@@ -5,8 +5,7 @@ class C_Home extends CI_Controller {
 
 	public function index()
 	{
-		$data['paket'] = $this->db->get('paket_laundry');
-		$this->load->view('home', $data);
+		$this->load->view('home', []);
 	}
 
 	public function getOrderById($id)

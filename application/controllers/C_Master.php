@@ -94,9 +94,6 @@ class C_Master extends CI_Controller {
 				'nama_pelanggan' => $this->input->post('nama_pelanggan'),
 				'no_wa' => $this->input->post('no_wa'),
 				'alamat' => $this->input->post('alamat'),
-				'lokasi' => $this->input->post('lokasi'),
-				'email' => $this->input->post('email'),  
-				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),  
 			);
 		} else if($table == 'paket_laundry') {
 			$pSubscribe = 'admin-paket-laundry';
@@ -134,8 +131,6 @@ class C_Master extends CI_Controller {
 				$users = array(
 					'nama_lengkap' => $formData['nama_pelanggan'], 
 					'level' => 'Pelanggan', 
-					'email' => $formData['email'], 
-					'password' => $formData['password'], 
 					'id_karyawan' => 'p'.$this->db->insert_id()
 				);
 
@@ -179,14 +174,11 @@ class C_Master extends CI_Controller {
 				'nama_pelanggan' => $this->input->post('nama_pelanggan'),
 				'no_wa' => $this->input->post('no_wa'),
 				'alamat' => $this->input->post('alamat'),
-				'lokasi' => $this->input->post('lokasi'),
-				'email' => $this->input->post('email'), 
 			);
 
 			$users = array(
 				'nama_lengkap' => $this->input->post('nama_pelanggan'), 
 				'level' => 'Pelanggan', 
-				'email' => $this->input->post('email'), 
 			); 
 
 			if($this->input->post('password') != '') {
@@ -194,16 +186,11 @@ class C_Master extends CI_Controller {
 					'nama_pelanggan' => $this->input->post('nama_pelanggan'),
 					'no_wa' => $this->input->post('no_wa'),
 					'alamat' => $this->input->post('alamat'),
-					'lokasi' => $this->input->post('lokasi'),
-					'email' => $this->input->post('email'), 
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT), 
 				);
 
 				$users = array(
 					'nama_lengkap' => $this->input->post('nama_pelanggan'), 
 					'level' => 'Pelanggan', 
-					'email' => $this->input->post('email'), 
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT), 
 				); 
 			}   
 

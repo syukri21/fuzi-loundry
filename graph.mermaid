@@ -1,0 +1,82 @@
+
+classDiagram
+direction BT
+class karyawan {
+   varchar nama_karyawan
+   varchar kontak
+   varchar alamat
+   varchar kategori
+   varchar email
+   varchar password
+   int id
+	create()
+	update()
+	delete()
+}
+class order {
+   varchar order_id
+   int id_pelanggan
+   int berat
+   int harga
+   int total_harga
+   varchar tanggal_order
+   varchar status_pembayaran
+   varchar status_order
+   varchar snap_token
+   varchar kategori_order
+   varchar refund
+   varchar alasan_refund
+   bigint id_paket_reguler
+   varchar nama_paket_reguler
+   int harga_paket_reguler
+   int id
+
+	create()
+	update()
+	delete()
+}
+class order_setting {
+   int harga
+   varchar nama_pemilik
+   varchar nama_laundry
+   varchar alamat_laundry
+   varchar logo
+   int id
+
+	create()
+	update()
+	delete()
+}
+class paket_reguler {
+   varchar nama_paket
+   int harga_paket
+   int id
+
+	create()
+	update()
+	delete()
+}
+class pelanggan {
+   varchar nama_pelanggan
+   varchar no_wa
+   varchar alamat
+   int id
+
+	create()
+	update()
+	delete()
+}
+class users {
+   varchar email
+   varchar password
+   varchar nama_lengkap
+   varchar level
+   varchar id_karyawan
+   varchar reset_code
+   datetime reset_code_expiry
+   int id
+
+	create()
+	update()
+	delete()
+}

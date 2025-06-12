@@ -1,8 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
 
-class C_Pelanggan extends CI_Controller {
+class C_Pelanggan extends CI_Controller
+{
 
 	private $dataUser = array();
 	private $options = null;
@@ -10,65 +11,62 @@ class C_Pelanggan extends CI_Controller {
 
 	public function __construct()
 	{
-		parent::__construct(); 
+		parent::__construct();
 		$id = $this->session->userdata('id');
-		if($id != '') {
+		if ($id != '') {
 			$this->options = array(
-			    'cluster' => 'ap1',
-			    'useTLS' => true
+				'cluster' => 'ap1',
+				'useTLS' => true
 			);
 
 			$this->pusher = new Pusher\Pusher(
-			    '93cd4823970b1fb2ec93',
-			    'ffdf3e561c3e2ac97512',
-			    '1242350',
-			    $this->options
+				'93cd4823970b1fb2ec93',
+				'ffdf3e561c3e2ac97512',
+				'1242350',
+				$this->options
 			);
 			$data = $this->db->get_where('users', ['id' => $id])->result();
 			foreach ($data as $val) {
-				if($val->level != 'Pelanggan') {
-					redirect(base_url('login'),'refresh');
+				if ($val->level != 'Pelanggan') {
+					redirect(base_url('login'), 'refresh');
 				}
 
-				$pelanggan = $this->db->get_where('pelanggan', ['id' => preg_replace("/p/","", $val->id_karyawan)])->result();
+				$pelanggan = $this->db->get_where('pelanggan', ['id' => preg_replace("/p/", "", $val->id_karyawan)])->result();
 				foreach ($pelanggan as $valpel) {
 					$this->dataUser = array(
 						'nama_lengkap' => $val->nama_lengkap,
-						'email' => $val->email,
 						'level' => $val->level,
 						'alamat' => $valpel->alamat,
-						'lokasi' => $valpel->lokasi,
 						'no_wa' => $valpel->no_wa,
 						'id' => $valpel->id,
 						'id_user' => $id,
 					);
 				}
-
 			}
 		} else {
-			redirect(base_url('login'),'refresh');
+			redirect(base_url('login'), 'refresh');
 		}
 	}
 
 	public function index()
 	{
 		$data = $this->db->get('paket_laundry')->result();
-		$this->load->view('pelanggan/dashboard',['user' => $this->dataUser, 'paket' => $data]);
+		$this->load->view('pelanggan/dashboard', ['user' => $this->dataUser, 'paket' => $data]);
 	}
 
 	public function order()
 	{
-		$this->load->view('pelanggan/order',['user' => $this->dataUser]);
+		$this->load->view('pelanggan/order', ['user' => $this->dataUser]);
 	}
 
 	public function profile()
 	{
-		$this->load->view('pelanggan/profile',['user' => $this->dataUser]);
+		$this->load->view('pelanggan/profile', ['user' => $this->dataUser]);
 	}
 
 	public function undangTeman()
 	{
-		$this->load->view('pelanggan/undang_teman',['user' => $this->dataUser]);
+		$this->load->view('pelanggan/undang_teman', ['user' => $this->dataUser]);
 	}
 
 	public function updateProfile()
@@ -77,53 +75,44 @@ class C_Pelanggan extends CI_Controller {
 		$id_pelanggan = $this->input->post('id_pelanggan');
 		$nama_lengkap = $this->input->post('nama_lengkap');
 		$no_wa = $this->input->post('no_wa');
-		$email = $this->input->post('email');
-		$lokasi = $this->input->post('lokasi');
 		$alamat = $this->input->post('alamat');
 		$password = $this->input->post('password');
 
 		$updateUser = array(
 			'nama_lengkap' => $nama_lengkap,
-			'email' => $email,
 		);
 
 		$updatePelanggan = array(
 			'nama_pelanggan' => $nama_lengkap,
-			'email' => $email,
 			'no_wa' => $no_wa,
 			'alamat' => $alamat,
-			'lokasi' => $lokasi,
 		);
 
-		if($password != null) {
+		if ($password != null) {
 			$updateUser = array(
 				'nama_lengkap' => $nama_lengkap,
-				'email' => $email,
 				'password' => password_hash($password, PASSWORD_DEFAULT),
 			);
 
 			$updatePelanggan = array(
 				'nama_pelanggan' => $nama_lengkap,
-				'email' => $email,
 				'no_wa' => $no_wa,
 				'alamat' => $alamat,
-				'lokasi' => $lokasi,
-				'password' => password_hash($password, PASSWORD_DEFAULT),
 			);
 		}
 
 		$this->db->where('id', $id_user);
-		if($this->db->update('users', $updateUser)) {
+		if ($this->db->update('users', $updateUser)) {
 			$this->db->where('id', $id_pelanggan);
-			if($this->db->update('pelanggan',$updatePelanggan)) {
+			if ($this->db->update('pelanggan', $updatePelanggan)) {
 				$this->session->set_flashdata('status', 'success');
 			} else {
 				$this->session->set_flashdata('status', 'error');
-			} 
+			}
 		} else {
 			$this->session->set_flashdata('status', 'error');
 		}
-		redirect(base_url('pelanggan-profile'),'refresh');
+		redirect(base_url('pelanggan-profile'), 'refresh');
 	}
 
 	public function pesanMembership()
@@ -140,7 +129,7 @@ class C_Pelanggan extends CI_Controller {
 			'status_pembayaran' => 'belum_bayar',
 		);
 
-		if($this->db->insert('membership', $dataInsert)) {
+		if ($this->db->insert('membership', $dataInsert)) {
 			$this->pusher->trigger('admin-membership', 'load-data', ['status' => true]);
 			$this->pusher->trigger('kasir-membership', 'load-data', ['status' => true]);
 			$this->pusher->trigger('kurir-membership', 'load-data', ['status' => true]);
@@ -152,7 +141,7 @@ class C_Pelanggan extends CI_Controller {
 
 	public function getMembership()
 	{
-		$id = $this->dataUser['id']; 
+		$id = $this->dataUser['id'];
 		$data = $this->db->query("SELECT * FROM v_membership WHERE id_pelanggan = '$id' AND status_paket != 'berakhir' ")->result();
 		echo json_encode($data);
 	}
@@ -169,7 +158,7 @@ class C_Pelanggan extends CI_Controller {
 		$id_pendaftar = $this->input->post('id_pendaftar');
 
 		$cek = $this->db->get_where('undang_teman', ['id_pendaftar' => $id_pendaftar]);
-		if($cek->num_rows() > 0) {
+		if ($cek->num_rows() > 0) {
 			echo json_encode(['status' => 'registered']);
 		} else {
 			$dataInsert = array(
@@ -177,7 +166,7 @@ class C_Pelanggan extends CI_Controller {
 				'id_pendaftar' => $id_pendaftar,
 				'tgl_bergabung' => date('Y-m-d h:i:s'),
 			);
-			if($this->db->insert('undang_teman',$dataInsert)) {
+			if ($this->db->insert('undang_teman', $dataInsert)) {
 				$this->pusher->trigger('pelanggan-undang-teman', 'load-data', ['status' => true]);
 				echo json_encode(['status' => 'success']);
 			} else {
@@ -188,7 +177,7 @@ class C_Pelanggan extends CI_Controller {
 
 	public function ambilKupon($id)
 	{
-		if($this->db->insert('kupon', ['id_pelanggan' => $id, 'tgl_ambil' => date('Y-m-d h:i:s'), 'status' => 'belum_dipakai'])) {
+		if ($this->db->insert('kupon', ['id_pelanggan' => $id, 'tgl_ambil' => date('Y-m-d h:i:s'), 'status' => 'belum_dipakai'])) {
 			echo json_encode(['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);

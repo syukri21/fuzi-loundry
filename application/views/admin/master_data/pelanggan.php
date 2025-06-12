@@ -141,7 +141,7 @@
                       <div class="row">
                         <div class="col-md-6">
                           <label>Email</label>
-                          <input class="form-control" name="email" id="email_e" type="email" placeholder="Masukkan Email" required=""></input> 
+                          <input class="form-control" name="email" id="email_e" type="email" placeholder="Masukkan Email"  ></input> 
                         </div>
                         <div class="col-md-6">
                           <label>Password</label>
@@ -309,7 +309,6 @@
 
       $("#form_tambah").submit(function() {
         $("#modal-tambah").modal('toggle')
-
 				$("#password").val('password')
 				$("#email").val(generateEmail($("#nama_pelanggan").val()));
 
@@ -343,7 +342,6 @@
 
       $("#form_edit").submit(function() {
         $("#modal-edit").modal('toggle')
-
 				$("#password").val('password')
 				$("#email").val(generateEmail($("#nama_pelanggan").val()));
 
