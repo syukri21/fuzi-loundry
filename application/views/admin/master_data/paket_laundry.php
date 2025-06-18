@@ -173,7 +173,17 @@
       </div>
     </div>
     <?php $this->load->view('layout/js'); ?>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+	<script type="text/javascript">
+		class Pusher {
+			subscribe(a) {
+				console.log("subscribe ", a)
+				return function(b, c) {
+					console.log("Load", b)
+					c()
+				}
+			}
+		}
+	</script>
     <script type="text/javascript">   
     	'use strict'; 
       const base_url = '<?php echo base_url(); ?>'

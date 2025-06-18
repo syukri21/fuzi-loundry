@@ -151,7 +151,17 @@
     <script src="<?php echo base_url(); ?>assets/js/datepicker/date-picker/datepicker.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/datepicker/date-picker/datepicker.en.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/datepicker/date-picker/datepicker.custom.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+	<script type="text/javascript">
+		class Pusher {
+			subscribe(a) {
+				console.log("subscribe ", a)
+				return function(b, c) {
+					console.log("Load", b)
+					c()
+				}
+			}
+		}
+	</script>
     <script type="text/javascript">    
       const base_url = '<?php echo base_url(); ?>'
       const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei','Juni', 'Juli', 'Agustus', 'September', 'Oktober','November', 'Desember'];

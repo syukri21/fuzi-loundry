@@ -5,7 +5,6 @@ date_default_timezone_set('Asia/Jakarta');
 class C_Master extends CI_Controller {
 
 	private $options = null;
-	private $pusher = null;
 
 	public function __construct()
 	{
@@ -15,12 +14,6 @@ class C_Master extends CI_Controller {
 		    'useTLS' => true
 		);
 
-		$this->pusher = new Pusher\Pusher(
-		    '93cd4823970b1fb2ec93',
-		    'ffdf3e561c3e2ac97512',
-		    '1242350',
-		    $this->options
-		);
 	}
 
 	public function getUsers($level)
@@ -143,13 +136,11 @@ class C_Master extends CI_Controller {
 						'id_pendaftar' => $this->db->insert_id(),
 						'tgl_bergabung' => date('Y-m-d h:i:s')
 					];
-					$this->pusher->trigger('pelanggan-undang-teman', 'load-data', ['status' => true]);
 					$this->db->insert('undang_teman', $dataUndang);
 				}
 			}
 
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger($pSubscribe, 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -249,7 +240,6 @@ class C_Master extends CI_Controller {
 		$this->db->where($where);
 		if($this->db->update($table,$formData)) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger($pSubscribe, 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -281,7 +271,6 @@ class C_Master extends CI_Controller {
 		$this->db->where($where);
 		if($this->db->delete($table)) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger($pSubscribe, 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -314,10 +303,6 @@ class C_Master extends CI_Controller {
 		];
 		$this->db->where('id', $id);
 		if($this->db->update('membership',$dataUpdate)) {
-			$this->pusher->trigger('admin-membership', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-membership', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kurir-membership', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-membership', 'load-data', ['status' => true]);
 			echo json_encode(['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);

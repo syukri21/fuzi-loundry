@@ -7,7 +7,6 @@ class C_Pelanggan extends CI_Controller
 
 	private $dataUser = array();
 	private $options = null;
-	private $pusher = null;
 
 	public function __construct()
 	{
@@ -19,12 +18,6 @@ class C_Pelanggan extends CI_Controller
 				'useTLS' => true
 			);
 
-			$this->pusher = new Pusher\Pusher(
-				'93cd4823970b1fb2ec93',
-				'ffdf3e561c3e2ac97512',
-				'1242350',
-				$this->options
-			);
 			$data = $this->db->get_where('users', ['id' => $id])->result();
 			foreach ($data as $val) {
 				if ($val->level != 'Pelanggan') {
@@ -130,9 +123,6 @@ class C_Pelanggan extends CI_Controller
 		);
 
 		if ($this->db->insert('membership', $dataInsert)) {
-			$this->pusher->trigger('admin-membership', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-membership', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kurir-membership', 'load-data', ['status' => true]);
 			echo json_encode(['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
@@ -167,7 +157,6 @@ class C_Pelanggan extends CI_Controller
 				'tgl_bergabung' => date('Y-m-d h:i:s'),
 			);
 			if ($this->db->insert('undang_teman', $dataInsert)) {
-				$this->pusher->trigger('pelanggan-undang-teman', 'load-data', ['status' => true]);
 				echo json_encode(['status' => 'success']);
 			} else {
 				echo json_encode(['status' => 'error']);

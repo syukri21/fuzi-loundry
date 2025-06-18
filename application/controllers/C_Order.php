@@ -10,7 +10,6 @@ class C_Order extends CI_Controller {
 	private $serverKeySandbox = 'SB-Mid-server-c-qd_jjdocggL7_3tGUhdvwy';
 	private $clientKeySandbox = 'SB-Mid-client-hCnc-G7Vc8crGNVH';
 	private $options = null;
-	private $pusher = null;
 
 	public function __construct()
 	{
@@ -22,12 +21,6 @@ class C_Order extends CI_Controller {
 			    'useTLS' => true
 			);
 
-			$this->pusher = new Pusher\Pusher(
-			    '93cd4823970b1fb2ec93',
-			    'ffdf3e561c3e2ac97512',
-			    '1242350',
-			    $this->options
-			);
 			$data = $this->db->get_where('users', ['id' => $id])->result();
 			foreach ($data as $val) {  
 				$pelanggan = $this->db->get_where('pelanggan', ['id' => preg_replace("/p/","", $val->id_karyawan)])->result();
@@ -227,7 +220,6 @@ class C_Order extends CI_Controller {
 		$alasan_refund = $this->input->post('alasan_refund');
 		$this->db->where('order_id',$order_id);
 		if($this->db->update('order', array('alasan_refund' => $alasan_refund, 'refund' => 'persetujuan'))) {
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
 			echo json_encode(['status' => true]); 
 		} else {
 			echo json_encode(['status' => false]); 
@@ -267,7 +259,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$order_id);
 		if($this->db->update('order', array('status_pembayaran' => 'cancel'))) {
 			echo json_encode(['status' => true, 'res' => $result]); 
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]); 
 		}
@@ -329,9 +320,6 @@ class C_Order extends CI_Controller {
 
 		if($this->db->insert('order', $dataForm)) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -358,9 +346,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('id', $this->input->post('id'));
 		if($this->db->update('order', $dataForm)) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -371,8 +356,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$this->input->post('order_id'));
 		if($this->db->delete('order')) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -383,8 +366,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$this->input->post('order_id'));
 		if($this->db->update('order', ['status_pembayaran' => 'settlement'])) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -426,10 +407,6 @@ class C_Order extends CI_Controller {
 				
 				if($this->db->update('komisi_kurir', $update)) {
 					echo json_encode(['status' => true]);
-					$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
 				} else {
 					echo json_encode(['status' => false]);
 				}
@@ -443,10 +420,6 @@ class C_Order extends CI_Controller {
 				
 				if($this->db->insert('komisi_kurir', $dataInsert)) {
 					echo json_encode(['status' => true]);
-					$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
 				} else {
 					echo json_encode(['status' => false]);
 				}
@@ -497,11 +470,6 @@ class C_Order extends CI_Controller {
 				
 				if($this->db->update('komisi_washing', $update)) {
 					echo json_encode(['status' => true]);
-					$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('washing-order', 'load-data', ['status' => true]);
 				} else {
 					echo json_encode(['status' => false]);
 				}
@@ -515,11 +483,6 @@ class C_Order extends CI_Controller {
 				
 				if($this->db->insert('komisi_washing', $dataInsert)) {
 					echo json_encode(['status' => true]);
-					$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-					$this->pusher->trigger('washing-order', 'load-data', ['status' => true]);
 				} else {
 					echo json_encode(['status' => false]);
 				}
@@ -534,11 +497,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$this->input->post('order_id'));
 		if($this->db->update('order', ['status_order' => 'selesai_cuci'])) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('washing-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -549,11 +507,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$this->input->post('order_id'));
 		if($this->db->update('order', ['status_order' => 'pengantaran'])) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('washing-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
@@ -564,11 +517,6 @@ class C_Order extends CI_Controller {
 		$this->db->where('order_id',$this->input->post('order_id'));
 		if($this->db->update('order', ['status_order' => 'selesai_pengantaran'])) {
 			echo json_encode(['status' => true]);
-			$this->pusher->trigger('admin-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('pelanggan-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kurir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('kasir-order', 'load-data', ['status' => true]);
-			$this->pusher->trigger('washing-order', 'load-data', ['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
