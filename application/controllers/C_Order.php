@@ -4,12 +4,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 class C_Order extends CI_Controller {
 
-	private $dataUser = array();
-	private $serverKeyProduction = 'Mid-server-xEBvhzRy1KoDBDWmAYhymaQM';
-	private $clientKeyProduction = 'Mid-client-iQTH6lhygeEb4gOn';
 	private $serverKeySandbox = 'SB-Mid-server-c-qd_jjdocggL7_3tGUhdvwy';
-	private $clientKeySandbox = 'SB-Mid-client-hCnc-G7Vc8crGNVH';
-	private $options = null;
 
 	public function __construct()
 	{
