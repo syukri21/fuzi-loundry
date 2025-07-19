@@ -111,7 +111,7 @@
                             <input type="text" name="nama_pemilik" id="nama_pemilik" class="form-control" placeholder="Nama Pemilik Bank">  
                           </div>
                         </div>
-                        <div class="col-md-6 mt-2">
+                        <div class="col-md-6 mt-2"r
                           <div class="form-grou"> 
                             <label>Nama Bank</label>
                             <input type="text" name="nama_bank" id="nama_bank" class="form-control" placeholder="Nama Bank">  

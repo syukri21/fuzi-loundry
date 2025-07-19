@@ -17,10 +17,6 @@
 				<td> <span id="nama_pelanggan"></span></td>
 			</tr>
 			<tr>
-				<td>Email</td>
-				<td> <span id="email"></span></td>
-			</tr>
-			<tr>
 				<td>Nomor WhatsApp</td>
 				<td> <span id="no_wa"></span></td>
 			</tr>
