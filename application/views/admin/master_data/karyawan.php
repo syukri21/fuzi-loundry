@@ -150,11 +150,11 @@
                     </div>
                     <div class="my-2">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                           <label>Email</label>
                           <input class="form-control" name="email" id="email_e" type="email" placeholder="Masukkan Email" required=""></input> 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                           <label>Password</label>
                           <input class="form-control" name="password" id="password_e" type="password" placeholder="Masukkan Password"></input> 
                           * Jangan diisi jika tidak mengubah password
