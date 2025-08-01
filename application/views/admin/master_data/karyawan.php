@@ -138,7 +138,7 @@
                     <div class="my-2"> 
                       <label>Kategori</label>
                       <select class="form-control" name="kategori" id="kategori_e" required="">
-                        <option value="Karyawan">Kasir</option>
+                        <option value="Karyawan">Karyawan</option>
                       </select>
                     </div>
                     <div class="my-2">
