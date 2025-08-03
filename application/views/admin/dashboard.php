@@ -79,10 +79,26 @@
 				<div class="container-fluid">
 					<p>Grafik Pendapatan Berdasarkan Paket</p>
 					<div class="row">
-						<div class="col-sm-12 col-xl-12 col-lg-12">
+						<div class="col-sm-12 col-xl-6 col-lg-4">
 							<div class="card">
 								<div class="card-body">
-									<canvas id="revenueChart"></canvas>
+									<canvas id="DAYrevenueChart"></canvas>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-xl-6 col-lg-4">
+							<div class="card">
+								<div class="card-body">
+									<canvas id="MONTHrevenueChart"></canvas>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-xl-12 col-lg-4">
+							<div class="card">
+								<div class="card-body">
+									<canvas id="YEARrevenueChart"></canvas>
 								</div>
 							</div>
 						</div>
@@ -90,21 +106,21 @@
 				</div>
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 				<script>
-					const ctx = document.getElementById('revenueChart').getContext('2d');
-					const revenueChart = new Chart(ctx, {
-						type: 'bar',
-						data: {
-							labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-							datasets: []
-						},
-						options: {
-							scales: {
-								y: {
-									beginAtZero: true
-								}
-							}
-						}
-					});
+					// const ctx = document.getElementById('revenueChart').getContext('2d');
+					const ctxDay = document.getElementById('DAYrevenueChart').getContext('2d');
+					const ctxMonth = document.getElementById('MONTHrevenueChart').getContext('2d');
+					const ctxYear = document.getElementById('YEARrevenueChart').getContext('2d');
+					const revenueChart = {
+						'DAY': new Chart(ctxDay, {
+							type: 'bar',
+						}),
+						'MONTH': new Chart(ctxMonth, {
+							type: 'bar',
+						}),
+						'YEAR': new Chart(ctxYear, {
+							type: 'bar',
+						})
+					};
 				</script>
 
 				<!-- Graphs ends -->
@@ -143,7 +159,9 @@
 
 			loadPendapatan()
 			loadOrderSetting()
-			loadGraphs()
+			loadGraphs('YEAR')
+			loadGraphs('DAY')
+			loadGraphs('MONTH')
 		})
 
 		function loadOrderSetting() {
@@ -172,17 +190,17 @@
 			})
 		}
 
-		function loadGraphs() {
+		function loadGraphs(type = 'YEAR') {
 			$.ajax({
-				url: base_url + 'load-graph',
+				url: base_url + 'load-graph?type=' + type,
 				type: 'get',
 				dataType: 'json',
 				success: function(res) {
 					const labels = res.data.labels;
 					const datasets = res.data.datasets;
-					revenueChart.data.labels = labels;
-					revenueChart.data.datasets = datasets;
-					revenueChart.update();
+					revenueChart[type].data.labels = labels;
+					revenueChart[type].data.datasets = datasets;
+					revenueChart[type].update();
 				},
 				error: function(err) {
 					console.error('Error loading graphs:', err);

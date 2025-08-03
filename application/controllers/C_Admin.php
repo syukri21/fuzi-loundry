@@ -169,11 +169,29 @@ class C_Admin extends CI_Controller
 	public function loadGraph()
 	{
 
+		$type = '12 MONTH'; // Default to 12 months
+		$label = 'Pendapatan Per Tahun';
+		if ($this->input->get('type') == 'YEAR') {
+			$type = '12 MONTH';
+			$label = 'Pendapatan Per Tahun';
+		} else if ($this->input->get('type') == 'WEEK') {
+			$type = '1 WEEK';
+			$label = 'Pendapatan Per Minggu';
+		} else if ($this->input->get('type') == 'DAY') {
+			$type = '1 DAY';
+			$label = 'Pendapatan Per Hari';
+		} else if ($this->input->get('type') == 'MONTH') {
+			$type = '1 MONTH';
+			$label = 'Pendapatan Per Bulan';
+		} else {
+			$label = 'Pendapatan Per Tahun';
+			$type = '12 MONTH'; // Default to 12 months if no valid type is provided
+		}
 
 		$this->db->select("id_paket_reguler, nama_paket_reguler, SUM(total_harga) as total_harga, COUNT(*) as count");
 		$this->db->from('order');
 		$this->db->where('status_order', 'selesai_pengantaran'); // Filter for completed orders
-		$this->db->where('date >= DATE_SUB(NOW(), INTERVAL 12 MONTH)');
+		$this->db->where('date >= DATE_SUB(NOW(), INTERVAL ' . $type . ')');
 		$this->db->group_by("id_paket_reguler");
 		$this->db->group_by("nama_paket_reguler");
 		$this->db->order_by('id_paket_reguler', 'ASC');
@@ -181,7 +199,7 @@ class C_Admin extends CI_Controller
 
 		$dbresult = $query->result(); // Fetch the grouped results
 
-		$labels = ["Pendapatan Per Tahun"];
+		$labels = [$label];
 		$datasets = [];
 
 		for ($i = 0; $i < count($dbresult); $i++) {
