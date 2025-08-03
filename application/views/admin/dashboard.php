@@ -178,9 +178,9 @@
 				type: 'get',
 				dataType: 'json',
 				success: function(res) {
-					const months = res.data.months;
+					const labels = res.data.labels;
 					const datasets = res.data.datasets;
-					revenueChart.data.labels = months;
+					revenueChart.data.labels = labels;
 					revenueChart.data.datasets = datasets;
 					revenueChart.update();
 				},

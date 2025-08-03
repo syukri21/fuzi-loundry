@@ -170,50 +170,41 @@ class C_Admin extends CI_Controller
 	{
 
 
-		$this->db->select("DATE_FORMAT(date, '%M') as month, id_paket_reguler, nama_paket_reguler, SUM(total_harga) as total_harga, COUNT(*) as count");
+		$this->db->select("id_paket_reguler, nama_paket_reguler, SUM(total_harga) as total_harga, COUNT(*) as count");
 		$this->db->from('order');
 		$this->db->where('status_order', 'selesai_pengantaran'); // Filter for completed orders
-		$this->db->where('DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)');
-		$this->db->group_by("DATE_FORMAT(date, '%M')"); // Group by month name
+		$this->db->where('date >= DATE_SUB(NOW(), INTERVAL 12 MONTH)');
 		$this->db->group_by("id_paket_reguler");
 		$this->db->group_by("nama_paket_reguler");
-		$this->db->order_by('month', 'DESC');
+		$this->db->order_by('id_paket_reguler', 'ASC');
 		$query = $this->db->get();
 
 		$dbresult = $query->result(); // Fetch the grouped results
+echo json_encode($dbresult); // Output the results for debugging
+		//
+die(); // Stop execution to inspect the output
 
-		$monthYears = [];
+		$labels = ["Pendapatan Per Tahun"];
 		$datasets = [];
-		for ($i = 0; $i < 6; $i++) {
-			$monthYears[] = date('F Y', strtotime("+$i month", strtotime($dbresult[0]->month . ' 1')));
-		}
 
 		for ($i = 0; $i < count($dbresult); $i++) {
 			$paket = $dbresult[$i]->id_paket_reguler;
-			if (!isset($datasets[$paket])) {
-				$datasets[$paket] = [
-					'label' => $dbresult[$i]->nama_paket_reguler,
-					'data' => array_fill(0, 6, 0), // Initialize with zeros for each month
-					'backgroundColor' => $this->generate_rgba_by_name($paket),
-					'borderColor' => $this->generate_rgba_by_name($paket),
-					'borderWidth' => 1
-				];
-			}
-			// Find the index of the month in the monthYears array
-			$m  = strtotime($dbresult[$i]->month . ' 1');
-			$monthIndex = array_search(date('F Y', $m), $monthYears);
-			/* var_dump($monthIndex . " month " . $dbresult[$i]->month); */
-			if ($monthIndex !== false) {
-				$datasets[$paket]['data'][$monthIndex] = $dbresult[$i]->total_harga; // Set the total_harga for the corresponding month
-			}
+			$data = $dbresult[$i]->total_harga;
+
+			$datasets[] = [
+				'label' => $dbresult[$i]->nama_paket_reguler,
+				'data' => [$data],
+				'backgroundColor' => $this->generate_rgba_by_name($paket),
+				'borderColor' => $this->generate_rgba_by_name($paket),
+				'borderWidth' => 1
+			];
 		}
+
 
 		$datasets = array_values($datasets); // Re-index the datasets array
 
-
-
 		$data = [
-			'months' => $monthYears,
+			'labels' => $labels,
 			'datasets' => $datasets,
 		];
 
