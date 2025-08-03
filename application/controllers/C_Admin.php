@@ -180,9 +180,6 @@ class C_Admin extends CI_Controller
 		$query = $this->db->get();
 
 		$dbresult = $query->result(); // Fetch the grouped results
-echo json_encode($dbresult); // Output the results for debugging
-		//
-die(); // Stop execution to inspect the output
 
 		$labels = ["Pendapatan Per Tahun"];
 		$datasets = [];
