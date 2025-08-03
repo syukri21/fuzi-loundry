@@ -1,18 +1,19 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Admin extends CI_Controller {
+class C_Admin extends CI_Controller
+{
 	private $dataUser = array();
 
 	public function __construct()
 	{
-		parent::__construct(); 
+		parent::__construct();
 		$id = $this->session->userdata('id');
-		if($id != '') {
+		if ($id != '') {
 			$data = $this->db->get_where('users', ['id' => $id])->result();
 			foreach ($data as $val) {
-				if($val->level != 'Admin') {
-					redirect(base_url('login'),'refresh');
+				if ($val->level != 'Admin') {
+					redirect(base_url('login'), 'refresh');
 				}
 
 				$this->dataUser = array(
@@ -22,94 +23,94 @@ class C_Admin extends CI_Controller {
 				);
 			}
 		} else {
-			redirect(base_url('login'),'refresh');
+			redirect(base_url('login'), 'refresh');
 		}
 	}
 
 	public function index()
 	{
-		$this->load->view('admin/dashboard',['user' => $this->dataUser]);
+		$this->load->view('admin/dashboard', ['user' => $this->dataUser]);
 	}
 
 	public function order()
 	{
-		$this->load->view('admin/order',['user' => $this->dataUser]);
+		$this->load->view('admin/order', ['user' => $this->dataUser]);
 	}
 
 	public function regulerOrder()
 	{
-		$this->load->view('admin/transaksi/reguler_order',['user' => $this->dataUser]);
+		$this->load->view('admin/transaksi/reguler_order', ['user' => $this->dataUser]);
 	}
 
 	public function onlineOrder()
 	{
-		$this->load->view('admin/transaksi/online_order',['user' => $this->dataUser]);
+		$this->load->view('admin/transaksi/online_order', ['user' => $this->dataUser]);
 	}
- 
+
 	public function membership()
 	{
-		$this->load->view('admin/membership',['user' => $this->dataUser]);
+		$this->load->view('admin/membership', ['user' => $this->dataUser]);
 	}
- 
+
 	public function komisiKurir()
 	{
-		$this->load->view('admin/komisi_kurir',['user' => $this->dataUser]);
+		$this->load->view('admin/komisi_kurir', ['user' => $this->dataUser]);
 	}
- 
+
 	public function komisiWashing()
 	{
-		$this->load->view('admin/komisi_washing',['user' => $this->dataUser]);
+		$this->load->view('admin/komisi_washing', ['user' => $this->dataUser]);
 	}
 
 	public function kinerjaPegawai()
 	{
-		$this->load->view('admin/kinerja_pegawai',['user' => $this->dataUser]);
+		$this->load->view('admin/kinerja_pegawai', ['user' => $this->dataUser]);
 	}
 
 	public function outlet()
 	{
-		$this->load->view('admin/master_data/outlet',['user' => $this->dataUser]);
+		$this->load->view('admin/master_data/outlet', ['user' => $this->dataUser]);
 	}
 
 	public function pelanggan()
 	{
-		$this->load->view('admin/master_data/pelanggan',['user' => $this->dataUser]);
+		$this->load->view('admin/master_data/pelanggan', ['user' => $this->dataUser]);
 	}
 
 	public function paketLaundry()
 	{
-		$this->load->view('admin/master_data/paket_laundry',['user' => $this->dataUser]);
+		$this->load->view('admin/master_data/paket_laundry', ['user' => $this->dataUser]);
 	}
 
 	public function karyawan()
 	{
-		$this->load->view('admin/master_data/karyawan',['user' => $this->dataUser]);
+		$this->load->view('admin/master_data/karyawan', ['user' => $this->dataUser]);
 	}
 
 	public function laporanOrder()
 	{
-		$this->load->view('admin/laporan/order',['user' => $this->dataUser]);
+		$this->load->view('admin/laporan/order', ['user' => $this->dataUser]);
 	}
 
 	public function laporanMembership()
 	{
-		$this->load->view('admin/laporan/membership',['user' => $this->dataUser]);
+		$this->load->view('admin/laporan/membership', ['user' => $this->dataUser]);
 	}
 
 	public function laporanPendapatan()
 	{
-		$this->load->view('admin/laporan/pendapatan',['user' => $this->dataUser]);
+		$this->load->view('admin/laporan/pendapatan', ['user' => $this->dataUser]);
 	}
 
 	public function undangTeman()
 	{
-		$this->load->view('admin/undang_teman',['user' => $this->dataUser]);
-	} 
+		$this->load->view('admin/undang_teman', ['user' => $this->dataUser]);
+	}
 
 	public function aturPaketReguler()
 	{
-		$this->load->view('admin/atur_paket_reguler',['user' => $this->dataUser]);
-	} 
+		$this->load->view('admin/atur_paket_reguler', ['user' => $this->dataUser]);
+	}
 
 	public function loadKomisiKurir()
 	{
@@ -118,7 +119,7 @@ class C_Admin extends CI_Controller {
 	}
 
 	public function loadKomisiWashing()
-	{ 
+	{
 		$data = $this->db->get('v_komisi_washing')->result();
 		echo json_encode($data);
 	}
@@ -129,21 +130,21 @@ class C_Admin extends CI_Controller {
 		$id = $this->input->post('id_paket');
 		$nama_paket = $this->input->post('nama_paket');
 		$harga_paket = $this->input->post('harga_paket');
-		
+
 		$data = array(
 			'nama_paket' => $nama_paket,
 			'harga_paket' => $harga_paket,
 		);
 
-		if($aksi == 'tambah') {
-			if($this->db->insert('paket_reguler',$data)) {
+		if ($aksi == 'tambah') {
+			if ($this->db->insert('paket_reguler', $data)) {
 				echo json_encode(['status' => true, 'aksi' => 'tambah']);
 			} else {
 				echo json_encode(['status' => false]);
 			}
-		} else if($aksi == 'edit') {
-			$this->db->where('id',$id);
-			if($this->db->update('paket_reguler',$data)) {
+		} else if ($aksi == 'edit') {
+			$this->db->where('id', $id);
+			if ($this->db->update('paket_reguler', $data)) {
 				echo json_encode(['status' => true, 'aksi' => 'edit']);
 			} else {
 				echo json_encode(['status' => false]);
@@ -154,17 +155,85 @@ class C_Admin extends CI_Controller {
 	}
 
 	public function hapusPaketReguler()
-	{ 
-		$id = $this->input->post('id_paket');  
+	{
+		$id = $this->input->post('id_paket');
 
-		$this->db->where('id',$id);
-		if($this->db->delete('paket_reguler')) { 
-			echo json_encode(['status' => true]); 
+		$this->db->where('id', $id);
+		if ($this->db->delete('paket_reguler')) {
+			echo json_encode(['status' => true]);
 		} else {
 			echo json_encode(['status' => false]);
 		}
 	}
 
+	public function loadGraph()
+	{
+
+
+		$this->db->select("DATE_FORMAT(date, '%M') as month, id_paket_reguler, nama_paket_reguler, SUM(total_harga) as total_harga, COUNT(*) as count");
+		$this->db->from('order');
+		$this->db->where('status_order', 'selesai_pengantaran'); // Filter for completed orders
+		$this->db->where('DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)');
+		$this->db->group_by("DATE_FORMAT(date, '%M')"); // Group by month name
+		$this->db->group_by("id_paket_reguler");
+		$this->db->group_by("nama_paket_reguler");
+		$this->db->order_by('month', 'DESC');
+		$query = $this->db->get();
+
+		$dbresult = $query->result(); // Fetch the grouped results
+
+		$monthYears = [];
+		$datasets = [];
+		for ($i = 0; $i < 6; $i++) {
+			$monthYears[] = date('F Y', strtotime("+$i month", strtotime($dbresult[0]->month . ' 1')));
+		}
+
+		for ($i = 0; $i < count($dbresult); $i++) {
+			$paket = $dbresult[$i]->id_paket_reguler;
+			if (!isset($datasets[$paket])) {
+				$datasets[$paket] = [
+					'label' => $dbresult[$i]->nama_paket_reguler,
+					'data' => array_fill(0, 6, 0), // Initialize with zeros for each month
+					'backgroundColor' => $this->generate_rgba_by_name($paket),
+					'borderColor' => $this->generate_rgba_by_name($paket),
+					'borderWidth' => 1
+				];
+			}
+			// Find the index of the month in the monthYears array
+			$m  = strtotime($dbresult[$i]->month . ' 1');
+			$monthIndex = array_search(date('F Y', $m), $monthYears);
+			/* var_dump($monthIndex . " month " . $dbresult[$i]->month); */
+			if ($monthIndex !== false) {
+				$datasets[$paket]['data'][$monthIndex] = $dbresult[$i]->total_harga; // Set the total_harga for the corresponding month
+			}
+		}
+
+		$datasets = array_values($datasets); // Re-index the datasets array
+
+
+
+		$data = [
+			'months' => $monthYears,
+			'datasets' => $datasets,
+		];
+
+		$result = [
+			'success' => true,
+			'data' => $data
+		];
+
+		echo json_encode($result);
+	}
+
+	public function generate_rgba_by_name($name)
+	{
+		$hash = md5($name); // Generate a hash from the name
+		$r = hexdec(substr($hash, 0, 2)); // Extract red value
+		$g = hexdec(substr($hash, 2, 2)); // Extract green value
+		$b = hexdec(substr($hash, 4, 2)); // Extract blue value
+		$a = rand(50, 100) / 100; // Random alpha value between 0.5 and 1
+		return "rgba($r, $g, $b, $a)";
+	}
 }
 
 /* End of file C_Admin.php */

@@ -70,6 +70,7 @@ $route['logout'] = 'C_Auth/logout';
 
 // Admin
 $route['admin-dashboard'] = 'C_Admin';
+$route['load-graph'] = 'C_Admin/loadGraph';
 $route['kinerja-pegawai'] = 'C_Admin/kinerjaPegawai';
 $route['komisi-kurir'] = 'C_Admin/komisiKurir';
 $route['komisi-washing'] = 'C_Admin/komisiWashing';
